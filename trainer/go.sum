@@ -1,0 +1,9 @@
+github.com/aaaton/golem/v4 v4.0.0/go.mod h1:OfK/S5v9Exsx1yO21WorREuIVV+Y5K2hygP0A9oJCCI=
+github.com/aaaton/golem/v4 v4.0.1 h1:jvnnTmzdfZC8cUGIo6obIcnmB3stTaf5Uw64OMx3C84=
+github.com/aaaton/golem/v4 v4.0.1/go.mod h1:OfK/S5v9Exsx1yO21WorREuIVV+Y5K2hygP0A9oJCCI=
+github.com/aaaton/golem/v4/dicts/en v1.0.1 h1:/BsOsh8JTgTkuevwM9axPnAi9CD4rK7TWHNdW/6V3Uo=
+github.com/aaaton/golem/v4/dicts/en v1.0.1/go.mod h1:1YKRrQNng+KbS+peA7sj3TIa8eqR6T2UqdJ+Tc9xeoA=
+github.com/joho/godotenv v1.4.0 h1:3l4+N6zfMWnkbPEXKng2o2/MR5mSwTrBih4ZEkkz1lg=
+github.com/joho/godotenv v1.4.0/go.mod h1:f4LDr5Voq0i2e/R5DDNOoa2zzDfwtkZa6DnEwAbqwq4=
+github.com/navossoc/bayesian v0.0.0-20171203014413-18fc5ea11e24 h1:4CbuTHh8VYL6BoZj3sPUsDb4BPB8UEHTN0f5kQTGI2M=
+github.com/navossoc/bayesian v0.0.0-20171203014413-18fc5ea11e24/go.mod h1:P1c1lcW3JeYIRbVw98K6qNHJq/3hX4ru5SCQc84ZbZo=
