@@ -1,5 +1,5 @@
 .history
 .metals
 .vscode
-./model_files/model.gob
+model_files/model.gob
 .idea

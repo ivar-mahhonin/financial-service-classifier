@@ -5,55 +5,43 @@ import (
 	"unicode"
 )
 
-func Tokenize(texts []string, stopWords []string) []string {
-	result := make([]string, len(texts))
+//Tokenize and clean text
+func Tokenize(texts []string, stopWords map[string]struct{}) []string {
+	result := make([]string, 0)
 
 	for _, t := range texts {
 		text := strings.ToLower(t)
 		tokens := strings.FieldsFunc(text, func(r rune) bool { return !unicode.IsLetter(r) })
 		withoutStopWords := cleanTokenizedText(tokens, stopWords)
-		result = append(result, strings.Split(withoutStopWords, " ")...)
+		result = append(result, withoutStopWords...)
 	}
 
 	return removeDuplicates(result)
 }
 
 //Removes stop words from string
-func cleanTokenizedText(tokens []string, stopWords []string) string {
+func cleanTokenizedText(tokens []string, stopWords map[string]struct{}) []string {
 	cleaned := []string{}
 
 	for _, word := range tokens {
-		if !contains(stopWords, word) {
+		if _, ok := stopWords[strings.ToLower(word)]; !ok {
 			lemmatized := Lemmatize(word)
 			cleaned = append(cleaned, lemmatized)
 		}
 	}
-	filteredText := strings.Join(cleaned, " ")
-	return filteredText
-}
-
-//Checks if slice of strings contain string
-func contains(slice []string, value string) bool {
-	for _, v := range slice {
-		if v == value {
-			return true
-		}
-	}
-	return false
+	return cleaned
 }
 
 //Remove duplicates from the strings
 func removeDuplicates(text []string) []string {
-	uniqueStrings := make(map[string]struct{})
+	uniqueStrings := make([]string, 0, len(text))
+	seen := make(map[string]struct{})
 
 	for _, s := range text {
-		uniqueStrings[s] = struct{}{}
+		if _, ok := seen[s]; !ok {
+			uniqueStrings = append(uniqueStrings, s)
+			seen[s] = struct{}{}
+		}
 	}
-
-	result := make([]string, 0, len(uniqueStrings))
-
-	for s := range uniqueStrings {
-		result = append(result, s)
-	}
-	return result
+	return uniqueStrings
 }

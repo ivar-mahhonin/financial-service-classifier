@@ -81,7 +81,7 @@ func getBaseModel(modelFileDir string, trainDataDir string, stopWordsDir string)
 	return classifier
 }
 
-func classify(text string, classes []models.FileTestData, stopWords []string, classifier *bayesian.Classifier) string {
+func classify(text string, classes []models.FileTestData, stopWords map[string]struct{}, classifier *bayesian.Classifier) string {
 	testTexts := make([]string, 0)
 	testTexts = append(testTexts, text)
 
@@ -99,14 +99,14 @@ func classify(text string, classes []models.FileTestData, stopWords []string, cl
 }
 
 // Creates a classifier from support cases, given the classes and stop words.
-func createClassifierFromTestData(classes []bayesian.Class, cases map[string][]string, stopWords []string) *bayesian.Classifier {
+func createClassifierFromTestData(classes []bayesian.Class, cases map[string][]string, stopWords map[string]struct{}) *bayesian.Classifier {
 	classifier := parallelClassifierTraining(cases, classes, stopWords)
 	classifier.ConvertTermsFreqToTfIdf()
 	return classifier
 }
 
 // Trains a classifier in parallel using multiple goroutines.
-func parallelClassifierTraining(cases map[string][]string, classes []bayesian.Class, stopWords []string) *bayesian.Classifier {
+func parallelClassifierTraining(cases map[string][]string, classes []bayesian.Class, stopWords map[string]struct{}) *bayesian.Classifier {
 	classifier := bayesian.NewClassifier(classes...)
 	log.Printf("Found %d classes", len(classes))
 

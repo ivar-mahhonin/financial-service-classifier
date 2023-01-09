@@ -2,16 +2,18 @@ package util
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
+	"path/filepath"
 
 	models "github.com/ivar-mahhonin/food-delivery-classifier/pkg/models"
 	"github.com/navossoc/bayesian"
 )
 
-func ReadTrainingData(testDataDir string, stopWordsDir string) (map[string][]string, []string, error) {
+func ReadTrainingData(testDataDir string, stopWordsDir string) (map[string][]string, map[string]struct{}, error) {
 	cases, errReadingTestData := readTestData(testDataDir)
 	if errReadingTestData != nil {
 		log.Fatal("Can not read test data: ", errReadingTestData)
@@ -37,6 +39,12 @@ func ReadModelFromFile(modelFileDir string) (*bayesian.Classifier, error) {
 
 func WriteModelToFile(modelFileDir string, classifier *bayesian.Classifier) error {
 	filePath := modelFileDir
+
+	dir := filepath.Dir(filePath)
+	if err := os.MkdirAll(dir, 0777); err != nil {
+		return err
+	}
+
 	file, err := os.Create(filePath)
 	if err != nil {
 		return err
@@ -46,8 +54,19 @@ func WriteModelToFile(modelFileDir string, classifier *bayesian.Classifier) erro
 	return err
 }
 
-func readStopWords(stopWordsDir string) ([]string, error) {
-	return readFile[string](stopWordsDir)
+func readStopWords(stopWordsDir string) (map[string]struct{}, error) {
+	stopWords, err := readFile[string](stopWordsDir)
+	stopWordsMap := make(map[string]struct{})
+
+	if err != nil {
+		return nil, err
+	}
+
+	for _, s := range stopWords {
+		stopWordsMap[s] = struct{}{}
+	}
+
+	return stopWordsMap, nil
 }
 
 func readFile[T any](fileName string) ([]T, error) {
@@ -58,6 +77,10 @@ func readFile[T any](fileName string) ([]T, error) {
 	}
 
 	var data []T
+
+	if !json.Valid([]byte(bytes)) {
+		return nil, errors.New("not a valid json")
+	}
 
 	if err := json.Unmarshal(bytes, &data); err != nil {
 		return nil, err
