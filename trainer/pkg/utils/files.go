@@ -16,13 +16,13 @@ import (
 func ReadTrainingData(testDataDir string, stopWordsDir string) (map[string][]string, map[string]struct{}, error) {
 	cases, errReadingTestData := readTestData(testDataDir)
 	if errReadingTestData != nil {
-		log.Fatal("Can not read test data: ", errReadingTestData)
+		log.Fatal("ReadTrainingData: can not read test data: ", errReadingTestData)
 		return nil, nil, errReadingTestData
 	}
 
 	stopWords, errReadingStopWords := readStopWords(stopWordsDir)
 	if errReadingStopWords != nil {
-		log.Fatal("Can not read stop words")
+		log.Fatal("ReadTrainingData: can not read stop words")
 		return nil, nil, errReadingStopWords
 	}
 

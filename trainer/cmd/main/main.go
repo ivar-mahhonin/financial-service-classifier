@@ -28,5 +28,10 @@ func main() {
 		os.Exit(1)
 	}
 
-	classifier = util.GetBaseModel(modelFileDir, trainDataDir, stopWordsDir)
+	_, err := util.GetBaseModel(modelFileDir, trainDataDir, stopWordsDir)
+
+	if err != nil {
+		log.Print("Running trainer failed. Stopping.")
+		os.Exit(1)
+	}
 }

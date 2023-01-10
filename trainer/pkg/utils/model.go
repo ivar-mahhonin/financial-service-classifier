@@ -1,9 +1,7 @@
 package util
 
 import (
-	"fmt"
 	"log"
-	"os"
 	"sync"
 
 	models "github.com/ivar-mahhonin/food-delivery-classifier/trainer/pkg/models"
@@ -18,30 +16,30 @@ const (
 
 //Reads support cases data, reads the model from the file, and generates a new model if necessary.
 //It then waits for all the support cases to be trained before exiting.
-func GetBaseModel(modelFileDir string, trainDataDir string, stopWordsDir string) *bayesian.Classifier {
-	cases, stopWords, errorReadData := ReadTrainingData(trainDataDir, stopWordsDir)
-
-	if errorReadData != nil {
-		log.Panic(errorReadData)
-		os.Exit(1)
-	}
-
-	var classes []bayesian.Class
-
-	for k := range cases {
-		class := bayesian.Class(k)
-		classes = append(classes, class)
-	}
-
+func GetBaseModel(modelFileDir string, trainDataDir string, stopWordsDir string) (*bayesian.Classifier, error) {
 	classifier, errorReadingModel := ReadModelFromFile(modelFileDir)
 
 	if errorReadingModel != nil {
-		log.Print("Can not read model from file")
+		log.Print("Can not read model from file: ", modelFileDir)
 	}
 
-	if classifier == nil || classifier.Learned() < len(classes) {
+	if classifier == nil {
 		if classifier != nil {
 			log.Print("There are more new classes in test data")
+		}
+
+		cases, stopWords, errorReadData := ReadTrainingData(trainDataDir, stopWordsDir)
+
+		if errorReadData != nil {
+			log.Panic(errorReadData)
+			return nil, errorReadData
+		}
+
+		var classes []bayesian.Class
+
+		for k := range cases {
+			class := bayesian.Class(k)
+			classes = append(classes, class)
 		}
 
 		log.Print("Generating new model")
@@ -49,14 +47,14 @@ func GetBaseModel(modelFileDir string, trainDataDir string, stopWordsDir string)
 		modelWriteErr := WriteModelToFile(modelFileDir, classifier)
 		if modelWriteErr != nil {
 			log.Panic(modelWriteErr)
-			os.Exit(1)
+			return nil, modelWriteErr
 		}
 	} else {
 		log.Printf("Found existing model with [%d classes] learned and [%d words] learned for every class", classifier.Learned(), classifier.WordCount())
 	}
 	wg.Wait()
 
-	return classifier
+	return classifier, nil
 }
 
 // Creates a classifier from support cases, given the classes and stop words.
@@ -102,13 +100,9 @@ func classify(text string, classes []models.FileTestData, stopWords map[string]s
 
 	tokenized := Tokenize(testTexts, stopWords)
 
-	score, likely, strict := classifier.LogScores(
+	_, likely, _ := classifier.LogScores(
 		tokenized,
 	)
-
-	println(likely)
-	fmt.Printf("%v \n", score)
-	fmt.Println("strict", strict)
 
 	return classes[likely].Class
 }

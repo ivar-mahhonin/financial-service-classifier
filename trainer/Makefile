@@ -11,4 +11,4 @@ remove_model:
 run_tests:
 	go test -v ./...
 run_single_test:
-	go test -v ./internal/server -count=1 -run $(test)
+	go test -v ./... -count=1 -run $(test)
