@@ -3,7 +3,7 @@
 run:
 	cd ./cmd/main && go run . && cd ../..
 build:
-	go build -o bin/main github.com/ivar-mahhonin/food-delivery-classifier/trainer/cmd/main
+	go build -o bin/main github.com/ivar-mahhonin/food-delivery-classifier/trainer-service/cmd/main
 run_bin:
 	cd bin && ./main && cd ..
 remove_model:

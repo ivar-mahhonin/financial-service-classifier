@@ -1,4 +1,4 @@
-module github.com/ivar-mahhonin/food-delivery-classifier/trainer
+module github.com/ivar-mahhonin/food-delivery-classifier/trainer-service
 
 go 1.18
 

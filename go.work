@@ -1,3 +1,5 @@
 go 1.18
 
-use ./trainer
+use ./trainer-service
+use ./classifier-service
+use ./tickets-api-service

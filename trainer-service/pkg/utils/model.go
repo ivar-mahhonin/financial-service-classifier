@@ -4,7 +4,7 @@ import (
 	"log"
 	"sync"
 
-	models "github.com/ivar-mahhonin/food-delivery-classifier/trainer/pkg/models"
+	models "github.com/ivar-mahhonin/food-delivery-classifier/trainer-service/pkg/models"
 	"github.com/navossoc/bayesian"
 )
 
