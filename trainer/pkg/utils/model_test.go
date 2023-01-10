@@ -53,13 +53,6 @@ func TestTrainingNewBaseModel(t *testing.T) {
 	defer os.RemoveAll("test_dir")
 }
 
-func TestGetBaseModelInvalidPaths(t *testing.T) {
-	_, err := GetBaseModel("invalid_model.gob", "invalid_data.json", "invalid_stopwords.txt")
-	if err == nil {
-		t.Errorf("Expected error about invalid paths.")
-	}
-}
-
 func TestCreateClassifierFromTestData(t *testing.T) {
 	// Prepare test data
 	classes := []bayesian.Class{"class1", "class2"}

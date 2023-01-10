@@ -2,18 +2,17 @@ package util
 
 import (
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/joho/godotenv"
 )
 
-func GetEnvVariable(key string) string {
+func LoadEnvFile() error {
 	dir, _ := os.Getwd()
 	err := godotenv.Load(fmt.Sprintf("%s/.env", dir))
-	if err != nil {
-		log.Fatalf("Error loading .env file")
-	}
+	return err
+}
 
+func GetEnvVariable(key string) string {
 	return os.Getenv(key)
 }

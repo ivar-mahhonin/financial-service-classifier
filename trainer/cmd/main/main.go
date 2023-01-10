@@ -11,6 +11,13 @@ import (
 var classifier *bayesian.Classifier
 
 func main() {
+	errLoadinEnv := util.LoadEnvFile()
+
+	if errLoadinEnv != nil {
+		log.Fatalf("Error loading .env file")
+		os.Exit(1)
+	}
+
 	stopWordsDir := util.GetEnvVariable("STOP_WORDS_DIR")
 	trainDataDir := util.GetEnvVariable("TRAIN_DATA_DIR")
 	modelFileDir := util.GetEnvVariable("MODEL_FILE_DIR")
