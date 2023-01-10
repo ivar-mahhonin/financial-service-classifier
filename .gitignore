@@ -3,3 +3,4 @@
 .vscode
 model_files/model.gob
 .idea
+trainer/bin

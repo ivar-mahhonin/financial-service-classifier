@@ -6,3 +6,9 @@ run_tests:
 	go test -v ./...
 run_single_test:
 	go test -v ./internal/server -count=1 -run $(test)
+buid:
+	go build -o bin/main github.com/ivar-mahhonin/food-delivery-classifier/trainer/cmd/main
+run_bin:
+	cd bin && ./main && cd ..
+remove_model:
+	rm -rf ../model_files

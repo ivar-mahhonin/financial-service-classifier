@@ -9,7 +9,7 @@ import (
 	"os"
 	"path/filepath"
 
-	models "github.com/ivar-mahhonin/food-delivery-classifier/pkg/models"
+	models "github.com/ivar-mahhonin/food-delivery-classifier/trainer/pkg/models"
 	"github.com/navossoc/bayesian"
 )
 

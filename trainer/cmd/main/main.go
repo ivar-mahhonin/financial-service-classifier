@@ -6,8 +6,8 @@ import (
 	"os"
 	"sync"
 
-	models "github.com/ivar-mahhonin/food-delivery-classifier/pkg/models"
-	util "github.com/ivar-mahhonin/food-delivery-classifier/pkg/utils"
+	models "github.com/ivar-mahhonin/food-delivery-classifier/trainer/pkg/models"
+	util "github.com/ivar-mahhonin/food-delivery-classifier/trainer/pkg/utils"
 	"github.com/joho/godotenv"
 	"github.com/navossoc/bayesian"
 )
@@ -136,7 +136,7 @@ func parallelClassifierTraining(cases map[string][]string, classes []bayesian.Cl
 
 func envVariable(key string) string {
 	dir, _ := os.Getwd()
-	err := godotenv.Load(fmt.Sprintf("%s/../../.env", dir))
+	err := godotenv.Load(fmt.Sprintf("%s/.env", dir))
 	if err != nil {
 		log.Fatalf("Error loading .env file")
 	}
