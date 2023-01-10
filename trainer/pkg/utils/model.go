@@ -94,15 +94,11 @@ func ParallelClassifierTraining(cases map[string][]string, classes []bayesian.Cl
 	return classifier
 }
 
-func classify(text string, classes []models.FileTestData, stopWords map[string]struct{}, classifier *bayesian.Classifier) string {
+func classify(text string, classes []models.FileTestData, stopWords map[string]struct{}, classifier *bayesian.Classifier) (string, float64) {
 	testTexts := make([]string, 0)
 	testTexts = append(testTexts, text)
-
 	tokenized := Tokenize(testTexts, stopWords)
-
-	_, likely, _ := classifier.LogScores(
-		tokenized,
-	)
-
-	return classes[likely].Class
+	probs, likely, _ := classifier.ProbScores(tokenized)
+	likely_class := classes[likely].Class
+	return likely_class, probs[likely] * 100
 }

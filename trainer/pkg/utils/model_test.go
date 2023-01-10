@@ -94,19 +94,26 @@ func TestClassify(t *testing.T) {
 
 	t.Run("Correct classification for class1", func(t *testing.T) {
 		text := "this is a text"
-		result := classify(text, classes, stopWords, classifier)
+		result, score := classify(text, classes, stopWords, classifier)
 		expected := "class1"
 		if result != expected {
 			t.Errorf("Expected %s, got %s", expected, result)
+		}
+
+		if score < 90 {
+			t.Errorf("Expected %f score, to be more than 90", score)
 		}
 	})
 
 	t.Run("Correct classification for class2", func(t *testing.T) {
 		text := "this is another text"
-		result := classify(text, classes, stopWords, classifier)
+		result, score := classify(text, classes, stopWords, classifier)
 		expected := "class2"
 		if result != expected {
 			t.Errorf("Expected %s, got %s", expected, result)
+		}
+		if score < 90 {
+			t.Errorf("Expected %f score, to be more than 90", score)
 		}
 	})
 }
