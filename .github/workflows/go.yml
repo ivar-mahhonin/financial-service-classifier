@@ -22,7 +22,8 @@ jobs:
         go-version: 1.18
 
     - name: Build
-      run: go build -v ./...
+      run: cd trainer && make build
 
     - name: Test
-      run: go test -v ./...
+      run: cd trainer && make run_tests
+
